@@ -50,3 +50,23 @@ form {
 .error {
   color: crimson;
 }
+
+.post {
+  font-size: 1rem;
+  color: #333;
+  padding: 1rem;
+}
+.card-horizontal .card-image img {
+  max-height: 90%;
+}
+.card-horizontal {
+  max-height: 150px;
+  margin: .5rem 0 1rem 0;
+  display: flex;
+}
+.card-action {
+  padding: 0;
+}
+.container {
+  margin: 1rem auto;
+}

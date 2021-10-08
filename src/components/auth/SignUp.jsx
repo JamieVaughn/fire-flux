@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+// import { app } from '../../../config.js'
 
 function SignUp (props) {
   const [credentials, setCredentials] = useState({
@@ -47,8 +48,7 @@ function SignUp (props) {
           minLength="8"
           pattern=""
           value={credentials.password} 
-          onChange={handleChange} 
-          onChange={validate}
+          onChange={e => (handleChange(e), validate(e))} 
           onFocus={validate}
           />
         </div>

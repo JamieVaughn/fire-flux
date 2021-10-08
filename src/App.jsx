@@ -5,13 +5,14 @@ import SignIn from './components/auth/SignIn'
 import SignUp from './components/auth/SignUp'
 import Profile from './components/dashboard/Profile'
 import CreatePost from './components/posts/CreatePost'
+import PostDetails from './components/posts/PostDetails'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 function App() {
 
   return (
     <Router>
-      <div className="App">
+      <main className="App">
         <Navbar />
         <div className="content">
           <Switch>
@@ -20,9 +21,10 @@ function App() {
             <Route path='/signup' component={SignUp} />
             <Route path='/profile' component={Profile} />
             <Route path='/create' component={CreatePost} />
+            <Route path='/post/:id' component={PostDetails} />
           </Switch>
         </div>
-      </div>
+      </main>
     </Router>
   )
 }

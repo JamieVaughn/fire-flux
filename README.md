@@ -18,10 +18,12 @@ To step through the prompts again to reset the initialization of the firebase.js
 firebase init hosting
 ```
 
-When you’re ready, deploy your web app
-Put your static files (e.g., HTML, CSS, JS) in your app’s deploy directory 
-(the default is “public” make sure to switch to "dist" for vite builds). i
+When you’re ready, deploy your web app:
+
+Put your static files (e.g., HTML, CSS, JS) in your app’s deploy directory (the default is “public” make sure to switch to "dist" for vite builds).
+
 Dont forget to run `npm run build` to rebuild your vite project into the "dist" folder.
+
 Then, run this command from your app’s root directory:
 ```
 firebase deploy

@@ -1,15 +1,19 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { createPostAsync, createPost } from '../../features/postsSlice'
+import { db } from '../../../config.js'
+import { doc, setDoc } from 'firebase/firestore'
 
 export default function CreatePost (props) {
+  const dispatch = useDispatch()
   const [post, setPost] = useState({
-    title: '',
-    link: '',
-    summary: '',
-    notes: ''
+    title: 'Google',
+    link: 'https://google.com',
+    category: 'html',
+    summary: 'search tool',
+    notes: 'search for anything'
   })
   const [valid, setValid] = useState(true)
-
-
   const handleChange = e => {
     console.log(e.target.id)
     setPost({
@@ -21,6 +25,7 @@ export default function CreatePost (props) {
   const handleSubmit = e => {
     e.preventDefault()
     console.log('post', post)
+    dispatch(createPost(post))
   }
 
   const validate = e => {
@@ -38,6 +43,10 @@ export default function CreatePost (props) {
         <div className="input-field">
           <label htmlFor="link">Link</label>
           <input type="text" id="link" value={post.link} onChange={handleChange} />
+        </div>
+        <div className="input-field">
+          <label htmlFor="category">Category</label>
+          <input type="text" id="category" value={post.category} onChange={handleChange} />
         </div>
         <div className="input-field">
           <label htmlFor="summary">Summary</label>

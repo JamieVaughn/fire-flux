@@ -6,10 +6,14 @@ import SignUp from './components/auth/SignUp'
 import Profile from './components/dashboard/Profile'
 import CreatePost from './components/posts/CreatePost'
 import PostDetails from './components/posts/PostDetails'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+
 
 function App() {
-
+  const user = useSelector(state => state.auth?.currentUser)
+  if(user === null) <Redirect push to="/signin" />
+  console.log('app', user)
   return (
     <Router>
       <main className="App">

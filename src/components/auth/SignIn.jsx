@@ -1,15 +1,23 @@
 import React, { useState } from 'react'
+import { Redirect } from 'react-router-dom'
+import {useDispatch,useSelector} from 'react-redux'
+import {signinAsync, selectIsAuthed,} from '../../features/authSlice'
+
 
 function SignIn (props) {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const dispatch = useDispatch()
+  const isAuthed = useSelector(selectIsAuthed) 
+  const [email, setEmail] = useState('jvaughn4h@gmail.com')
+  const [password, setPassword] = useState('password')
 
   const handleEmail = e => setEmail(e.target.value)
   const handlePass = e => setPassword(e.target.value)
   const handleSubmit = e => {
     e.preventDefault()
-    console.log('signin',  email, password)
+    dispatch(signinAsync({email, password}))
   }
+  
+  if(isAuthed) return <Redirect push to='/' />
 
   return (
     <div className="container">

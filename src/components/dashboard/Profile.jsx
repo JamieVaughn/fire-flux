@@ -1,27 +1,26 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { Redirect } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 function Profile (props) {
-  const [user, setUser] = useState({
-    fullName: 'jamie',
-    id: 1,
-    email: 'email',
-    lastLoginAt: new Date().toString(),
-    createdAt: new Date().toString()
-  })
+
+  const user = useSelector(state => state.auth?.currentUser)
+  console.log(user)
+  if(user === null) <Redirect push to='/signin' />
 
   return (
     <div>
       <h2>My Profile</h2>
       <div className="post card grey lighten-3">
         <div className="card-content">
-          <span className="card-title">{user.fullName}</span>
-          <p className="summary">User ID: {user.id}</p>
+          <span className="card-title">{user?.displayName ?? 'No name given'}</span>
+          <p className="summary">User ID: {user.uid}</p>
           <p>Email: {user.email}</p>
         </div>
         <div className="card-action">
           <div className="footer">
-            <p>Last Login: {user.lastLoginAt}</p>
-            <p>Joined: {user.createdAt}</p>
+            <p>Last Login: {user.lastSignInTime}</p>
+            <p>Joined: {user.creationTime}</p>
           </div>
         </div>
       </div>

@@ -7,7 +7,7 @@ import {signinAsync, selectIsAuthed,} from '../../features/authSlice'
 function SignIn (props) {
   const dispatch = useDispatch()
   const isAuthed = useSelector(selectIsAuthed) 
-  const [email, setEmail] = useState('jvaughn4h@gmail.com')
+  const [email, setEmail] = useState('jamie@vaughn.com')
   const [password, setPassword] = useState('password')
 
   const handleEmail = e => setEmail(e.target.value)

@@ -44,13 +44,13 @@ export const signupAsync = createAsyncThunk(
       })
   }
 )
-// export const authListener = createAsyncThunk(
-//   'auth/authListener',
-//   async () => {
-//       const signInUser = await useAuthState()
-//       return signInUser.data // payload
-//   }
-// )
+export const authListener = createAsyncThunk(
+  'auth/authListener',
+  async () => {
+      const signInUser = await useAuthState()
+      return signInUser.data // payload
+  }
+)
 
 // export const setUserData = createAsyncThunk(
 //   'firebase/setUserData',
@@ -179,19 +179,19 @@ export const slice = createSlice({
       state.authError = action.payload
       state.status = 'failed'
     },
-    // [authListener.pending]: (state, action) => {
-    //   state.status = 'loading'
-    // },
-    // [authListener.fulfilled]: (state, action) => {
-    //   console.log('listen', action)
-    //   state.currentUser = action.payload
-    //   state.status = 'success'
+    [authListener.pending]: (state, action) => {
+      state.status = 'loading'
+    },
+    [authListener.fulfilled]: (state, action) => {
+      console.log('listen', action)
+      state.currentUser = action.payload
+      state.status = 'success'
 
-    // },
-    // [authListener.rejected]: (state, action) => {
-    //   state.currentUser = null
-    //   state.status = 'failed'
-    // }
+    },
+    [authListener.rejected]: (state, action) => {
+      state.currentUser = null
+      state.status = 'failed'
+    }
   }
 })
 

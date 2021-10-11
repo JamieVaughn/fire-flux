@@ -31,7 +31,7 @@ function Notifications (props) {
 
   useEffect(() => {
     const unsub = onSnapshot(collection(db, 'notifications'), (snapshot) => {
-      console.log('notes', snapshot, snapshot.docs.map(doc => doc.data()))
+      console.log('notes', snapshot, snapshot.docs.map(doc => ({...doc.data(), id: doc.id})))
     })
     return unsub
   }, [])

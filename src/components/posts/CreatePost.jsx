@@ -22,10 +22,15 @@ export default function CreatePost (props) {
     })
   }
 
-  const handleSubmit = e => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     console.log('post', post)
-    dispatch(createPost(post))
+    // dispatch(createPost(post))
+    const docRef = doc(db, 'posts/1234')
+    console.log('ref', docRef)
+    await setDoc(docRef, post)
+      .then(data => console.log('set', data))
+      .catch(err => console.log('set', err))
   }
 
   const validate = e => {

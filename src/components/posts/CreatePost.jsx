@@ -2,10 +2,11 @@ import React, { useState } from 'react'
 
 export default function CreatePost (props) {
   const [post, setPost] = useState({
-    title: '',
-    link: '',
-    summary: '',
-    notes: ''
+    title: 'MDN Docs',
+    link: 'https://developer.mozilla.org/en-US/',
+    category: 'html',
+    summary: 'The mozilla developer network docs',
+    notes: 'The mozilla developer network docs'
   })
   const [valid, setValid] = useState(true)
 
@@ -38,6 +39,10 @@ export default function CreatePost (props) {
         <div className="input-field">
           <label htmlFor="link">Link</label>
           <input type="text" id="link" value={post.link} onChange={handleChange} />
+        </div>
+        <div className="input-field">
+          <label htmlFor="category">Category</label>
+          <input type="text" id="category" value={post.category} onChange={handleChange} />
         </div>
         <div className="input-field">
           <label htmlFor="summary">Summary</label>

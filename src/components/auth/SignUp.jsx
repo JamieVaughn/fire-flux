@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
-// import { app } from '../../../config.js'
+import { Redirect } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { signupAsync } from '../../features/authSlice'
 
 function SignUp (props) {
+  const isAuthed = useSelector(state => state.auth.currentUser)
+  const dispatch = useDispatch()
   const [credentials, setCredentials] = useState({
     firstName: '',
     lastName: '',
@@ -18,11 +22,14 @@ function SignUp (props) {
   }
   const handleSubmit = e => {
     e.preventDefault()
-    console.log('signup',  credentials)
+    // console.log('signup',  credentials)
+    dispatch(signupAsync(credentials))
   }
   const validate = e => {
     e.target.value.length < 8 ? setValid(false) : setValid(true)
   }
+
+  if(isAuthed) return <Redirect push to='/' />
 
   return (
     <div className="container">
@@ -46,7 +53,6 @@ function SignUp (props) {
           type="password" 
           id="password" 
           minLength="8"
-          pattern=""
           value={credentials.password} 
           onChange={e => (handleChange(e), validate(e))} 
           onFocus={validate}

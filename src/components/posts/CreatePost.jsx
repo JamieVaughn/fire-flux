@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
+import { db } from '../../../config.js'
+import { collection, doc, addDoc } from 'firebase/firestore'
 
 export default function CreatePost (props) {
   const [post, setPost] = useState({
     title: 'MDN Docs',
     link: 'https://developer.mozilla.org/en-US/',
-    category: 'html',
+    category: 'html5',
     summary: 'The mozilla developer network docs',
     notes: 'The mozilla developer network docs'
   })
@@ -19,13 +21,26 @@ export default function CreatePost (props) {
     })
   }
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('post', post)
-    const collectionRef = collection(db, 'posts')
-    const docRef = await addDoc(collectionRef, post)
-    console.log(docRef)
+    // console.log('post', post)
+    try {
+      const collectionRef = collection(db, 'posts')
+      const docRef = await addDoc(null, post)
+      console.log(docRef)
+    } catch (err) {
+      console.log('err', err)
+    }
   }
+
+  // e => {
+  //   return new Promise((resolve, reject) => {
+  //     const collectionRef = collection(db, 'posts')
+  //       resolve(addDoc(null, post))
+  //     }).then(data => {
+  //        console.log(docRef)
+  //     }).catch(err =>  console.log(err)) 
+  // }
 
   const validate = e => {
     e.target.value.length > 40 ? setValid(false) : setValid(true)

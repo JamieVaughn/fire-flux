@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { signupAsync } from '../../features/authSlice'
+import { db } from '../../../config.js'
+import { collection, doc, addDoc } from 'firebase/firestore'
 
 function SignUp (props) {
   const isAuthed = useSelector(state => state.auth.currentUser)
@@ -20,11 +22,17 @@ function SignUp (props) {
       [e.target.id]: e.target.value
     })
   }
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
     // console.log('signup',  credentials)
-    dispatch(signupAsync(credentials))
+    
+    try {
+      dispatch(signupAsync(credentials))
+    } catch (err) {
+      console.log('err', err)
+    }
   }
+ 
   const validate = e => {
     e.target.value.length < 8 ? setValid(false) : setValid(true)
   }

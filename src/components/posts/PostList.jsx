@@ -19,7 +19,7 @@ function PostList (props) {
   return (
     <div className="row">
       {posts.length ? posts.map(post =>(
-        <PostSummary key={post} link={post} title={'Title '+post} />
+        <PostSummary key={post.id} post={post} title={'Title '+post} />
       ))
     : 'loading...'
     }

@@ -19,9 +19,12 @@ export default function CreatePost (props) {
     })
   }
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
     console.log('post', post)
+    const collectionRef = collection(db, 'posts')
+    const docRef = await addDoc(collectionRef, post)
+    console.log(docRef)
   }
 
   const validate = e => {

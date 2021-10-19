@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { db } from '../../../config.js'
-import { collection, getDoc, getDocs, where, limit, query, onSnapshot } from 'firebase/firestore'
+import { collection, doc, onSnapshot, addDoc } from 'firebase/firestore'
 
 function Notifications (props) {
   const [notifications, setNotifications] = useState([])
@@ -9,20 +9,29 @@ function Notifications (props) {
   //   {id: 2, user: 'user2', content: 'added a new link!', time: new Date().toISOString() },
   // ]
 
-  useEffect(() => {
-      onSnapshot(query(
-      collection(db, 'notifications'),
-      limit(5)
-    ),
-    (snapshot) => {
-      snapshot.forEach(snap => console.log('snap', snap.docs))
-      console.log('note', snapshot, snapshot.size)
-      setNotifications(snapshot.docs)
-    }
-    )
+  // useEffect(() => {
+    //   onSnapshot(query(
+    //   collection(db, 'notifications'),
+    //   limit(5)
+    // ),
+    // (snapshot) => {
+    //   snapshot.forEach(snap => console.log('snap', snap.docs))
+    //   console.log('note', snapshot, snapshot.size)
+    //   setNotifications(snapshot.docs)
+    // }
+    // )
     // getDocs(collection(db, 'notifications')).then(data => {
     //   console.log('notifs', data, data.docs)
     // })
+  // }, [])
+
+  useEffect(() => {
+    // onSnapshot returns an unsubscribe function to garbage collect itself, so return it
+    const unsubscribe = onSnapshot(collection(db, 'notifications'), (snapshot) => {
+      const notifsArr = snapshot.docs.map(doc => ({...doc.data(), id: doc.id}))
+      setNotifications(notifsArr)
+    })
+    return unsubscribe
   }, [])
 
   return (

@@ -6,14 +6,14 @@ import { signinAsync } from '../../features/authSlice.js'
 function SignIn (props) {
   const dispatch = useDispatch()
   const isAuthed = useSelector(state => state.auth.currentUser)
-  const [email, setEmail] = useState('jamie@vaughn.com')
-  const [password, setPassword] = useState('password')
+  const status = useSelector(state => state.auth.status)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   const handleEmail = e => setEmail(e.target.value)
   const handlePass = e => setPassword(e.target.value)
   const handleSubmit = e => {
     e.preventDefault()
-    // console.log('signin',  email, password)
     dispatch(signinAsync({email, password}))
   }
 
@@ -34,6 +34,7 @@ function SignIn (props) {
         <div className="input-field">
           <button className="btn blue lighten-1">Login</button>
         </div>
+      {status === 'failed' && <span className="error">Error signing in</span>}
       </form>
     </div>
   )

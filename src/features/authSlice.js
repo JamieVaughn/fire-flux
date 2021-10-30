@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { auth, db } from '../../config'
 import { signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { useAuthState } from   '../components/hooks/useAuthState'
-import { collection, doc, addDoc, setDoc } from "firebase/firestore"; 
+import { collection, doc, addDoc, setDoc } from "firebase/firestore";
 
 export const signinAsync = createAsyncThunk(
   'auth/signin',
@@ -26,7 +26,7 @@ export const signinAsync = createAsyncThunk(
     })
     .catch(error => {
       console.log('signin err', error)
-      return error
+      throw error
     })
   }
 )
@@ -92,12 +92,6 @@ export const slice = createSlice({
       state.currentUser = action.payload
       const { displayName, email, uid, metadata } = action.payload
       const { creationTime, lastSignInTime} = metadata
-      // const userCol = collection(db, 'users') // old way -> db.collection('users')
-      // setDoc(doc(userCol, uid), {
-      //   displayName, email, uid, creationTime, lastSignInTime
-      // })
-      // .then(data => console.log('set', data))
-      // .catch(error => console.log('setError', error))
       const usersRef = collection(db, 'users')
       const payload = {
         email,

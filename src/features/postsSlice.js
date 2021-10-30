@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { collection, doc, addDoc, setDoc, serverTimestamp } from "firebase/firestore";
 
 export const getPosts = createAsyncThunk(
   'posts/getPosts',
@@ -9,8 +10,21 @@ export const getPosts = createAsyncThunk(
 
 export const createPostAsync = createAsyncThunk(
   'posts/createPostAsync',
-  post => {
-    return
+  async post => {
+    try {
+      const postsRef = collection(db, 'posts')
+      const postRef = await addDoc(postsRef, post)
+      const notifsRef = collection(db, 'notifications')
+      const payload = {
+        content: 'added a new link!',
+        time: serverTimestamp(),
+        user: post.author
+      }
+      const notifRef = addDoc(notifsRef, payload)
+      return post
+    } catch (err) {
+      return err
+    } 
   }
 )
 
@@ -24,7 +38,7 @@ export const slice = createSlice({
   },
   reducers: {
     createPost (state, action) {
-      state.posts.push(action.payload)
+      state.posts.push(action.payload)   
     },
     createError(state, action) {
       state.createError = action.payload ?? 'There was a problem posting you link'
@@ -36,6 +50,13 @@ export const slice = createSlice({
     },
     [createPostAsync.pending]: (state, action) => {
       state.status = 'loading'
+    },
+    [createPostAsync.fulfilled]: (state, action) => {
+      state.status = 'success'
+      state.posts.push(action.payload)  
+    },
+    [createPostAsync.rejected]: (state, action) => {
+      state.status = 'error'
     }
   }
 })

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import bgImg from '../img/bglg.svg'
 import PostSummary from './PostSummary'
 import { db } from '../../../config.js'
 import { collection, doc, onSnapshot, addDoc } from 'firebase/firestore'
@@ -21,7 +22,7 @@ function PostList (props) {
       {posts.length ? posts.map(post =>(
         <PostSummary key={post.id} post={post} title={'Title '+post} />
       ))
-    : 'loading...'
+    : <img src={bgImg} width='400px' height='400px' style={{width: '100vw', height: '100vh', position: 'absolute', left: '0'}}/>
     }
     </div>
   )

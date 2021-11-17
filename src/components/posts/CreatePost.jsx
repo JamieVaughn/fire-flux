@@ -1,27 +1,40 @@
 import React, { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { createPostAsync } from '../../features/postsSlice.js'
 
 export default function CreatePost (props) {
+  const auth = useSelector(state => state.auth.currentUser)
+  const dispatch = useDispatch()
   const [post, setPost] = useState({
-    title: 'MDN Docs',
-    link: 'https://developer.mozilla.org/en-US/',
-    category: 'html',
-    summary: 'The mozilla developer network docs',
-    notes: 'The mozilla developer network docs'
+    title: '',
+    link: '',
+    category: '',
+    summary: '',
+    notes: '',
+    author: auth.displayName ?? auth.fullName,
+    authorId: auth.uid
   })
   const [valid, setValid] = useState(true)
 
-
   const handleChange = e => {
-    console.log(e.target.id)
     setPost({
       ...post,
       [e.target.id]: e.target.value
     })
   }
 
-  const handleSubmit = e => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('post', post)
+    dispatch(createPostAsync(post))
+    setPost({
+      title: '',
+      link: '',
+      category: '',
+      summary: '',
+      notes: '',
+      author: auth.displayName ?? auth.fullName,
+      authorId: auth.uid
+    })
   }
 
   const validate = e => {

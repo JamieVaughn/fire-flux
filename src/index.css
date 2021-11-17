@@ -12,7 +12,9 @@ body {
   background: skyblue;
   min-height: 100vh;
 }
-
+.root {
+  background: transparent;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -40,8 +42,10 @@ code {
   font-weight: bold;
   font-size: 30px;
 }
-.icon.btn, .icon.btn i {
+a.icon.btn {
+  padding: 0;
   display: flex;
+  justify-content: center;
 }
 form {
   padding: 1rem;
@@ -50,11 +54,17 @@ form {
 .error {
   color: crimson;
 }
-
+.App {
+  background: transparent;
+  position: relative;
+}
 .post {
   font-size: 1rem;
   color: #333;
   padding: 1rem;
+}
+.card.section {
+  margin-top: 2rem;
 }
 .card-horizontal .card-image img {
   max-height: 90%;
@@ -68,9 +78,32 @@ form {
   padding: 0;
 }
 .container {
-  margin: 1rem auto;
+  padding: 1rem;
+  margin: 0 auto;
 }
 .card-image svg {
   height: 75px;
   margin-right: 14px;
+}
+.notification {
+  background: #fefcfa;
+  margin: 4px 0;
+  padding: 4px;
+  border: 1px solid #f1f1f1;
+}
+.notification .note-date {
+  font-size: 11px;
+}
+.loading {
+  animation: 1s ease-in forwards fadeout;
+  z-index: -10;
+}
+
+@keyframes fadeout {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }

@@ -2,7 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { auth, db } from '../../config'
 import { signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { useAuthState } from   '../components/hooks/useAuthState'
-import { collection, doc, setDoc } from "firebase/firestore"; 
+import { updateProfile } from 'firebase/auth'
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 export const signinAsync = createAsyncThunk(
   'auth/signin',
@@ -14,7 +15,7 @@ export const signinAsync = createAsyncThunk(
       const { accessToken, displayName, email, metadata, uid } = data.user
       const { creationTime, lastSignInTime } = metadata
       const payload = {
-        token: accessToken,
+        // token: accessToken,
         displayName,
         email,
         creationTime,
@@ -26,7 +27,7 @@ export const signinAsync = createAsyncThunk(
     })
     .catch(error => {
       console.log('signin err', error)
-      return error
+      throw error
     })
   }
 )
@@ -34,11 +35,24 @@ export const signinAsync = createAsyncThunk(
 export const signupAsync = createAsyncThunk(
   'auth/signupAsync',
   ({firstName, lastName, email, password}) => {
-    return createUserWithEmailAndPassword(auth, email, password).then(creds => {
+    return createUserWithEmailAndPassword(auth, email, password)
+    .then(creds => {
+      updateProfile(auth.currentUser, {displayName: firstName + ' ' + lastName})
+      const notifsRef = collection(db, 'notifications')
+      const payload = {
+        content: 'just joined!',
+        time: serverTimestamp(),
+        user: firstName + ' ' + lastName
+      }
+      const notifRef = addDoc(notifsRef, payload)
+      return creds
+    })
+    .then(creds => {
       console.log('signedup', creds)
-      const user = creds.user
-      user.displayName = firstName + ' ' + lastName
-      return user
+      const {accessToken, displayName, email, emailVerified, uid} = creds.user
+      const { createdAt, lastLoginAt } = creds.user.metadata
+      const fullName = firstName + ' ' + lastName
+      return {accessToken, displayName, fullName, email, emailVerified, createdAt, lastLoginAt, uid}
     }).catch(error => {
       console.log(error)
       return error
@@ -60,7 +74,8 @@ export const slice = createSlice({
   initialState: {
     currentUser: null,
     authError: null,
-    status: null
+    status: null,
+    message: ''
   },
   reducers: {
     signoutSuccess(state, action) {
@@ -69,6 +84,9 @@ export const slice = createSlice({
         console.log(error)
         state.authError = error
       })
+    },
+    resetMsg(state, action) {
+      state.message = ''
     }
   },
   extraReducers: {
@@ -78,6 +96,10 @@ export const slice = createSlice({
     [signinAsync.fulfilled]: (state, action) => {
       state.status = 'success'
       console.log('signedin success', action)
+      const user = {
+        ...action.meta.arg,
+        ...action.metadata
+      }
       state.currentUser = action.payload
     },
     [signinAsync.rejected]: (state, action) => {
@@ -87,17 +109,25 @@ export const slice = createSlice({
       state.status = 'loading'
     },
     [signupAsync.fulfilled]: (state, action) => {
-      state.status = 'success'
-      console.log('signedup success', action)
-      state.currentUser = action.payload
-      const { displayName, email, uid, metadata } = action.payload
-      const { creationTime, lastSignInTime} = metadata
-      // const userCol = collection(db, 'users') // old way -> db.collection('users')
-      // setDoc(doc(userCol, uid), {
-      //   displayName, email, uid, creationTime, lastSignInTime
-      // })
-      // .then(data => console.log('set', data))
-      // .catch(error => console.log('setError', error))
+      console.log('signedup server response', action)
+      if(action.payload.name === 'FirebaseError') {
+        state.status = 'failed'
+        state.message = action.payload?.code?.split('/')[1].replace('-', ' ')
+      } else {
+        state.currentUser = action.payload
+        state.status = 'success'
+        state.message = ''
+        const { displayName, email, uid, fullName, createdAt, lastLoginAt } = action.payload
+        const usersRef = collection(db, 'users')
+        const payload = {
+          email,
+          displayName,
+          fullName,
+          uid,
+          createdAt
+        }
+        const docRef = addDoc(usersRef, payload)
+      }
     },
     [signupAsync.rejected]: (state, action) => {
       state.status = 'failed'
@@ -124,7 +154,8 @@ export const {
   loginError,
   signoutSuccess,
   signupSuccess,
-  signupError
+  signupError,
+  resetMsg
 } = slice.actions
  
 export default slice.reducer

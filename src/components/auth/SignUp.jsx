@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { signupAsync } from '../../features/authSlice'
+import { signupAsync, resetMsg } from '../../features/authSlice'
 
 function SignUp (props) {
   const isAuthed = useSelector(state => state.auth.currentUser)
+  const authMsg = useSelector(state => state.auth.message)
   const dispatch = useDispatch()
   const [credentials, setCredentials] = useState({
     firstName: '',
@@ -15,16 +16,21 @@ function SignUp (props) {
   const [valid, setValid] = useState(true)
 
   const handleChange = e => {
+    dispatch(resetMsg())
     setCredentials({
       ...credentials,
       [e.target.id]: e.target.value
     })
   }
-  const handleSubmit = e => {
-    e.preventDefault()
-    // console.log('signup',  credentials)
-    dispatch(signupAsync(credentials))
+  const handleSubmit = async e => {
+    e.preventDefault()    
+    try {
+      dispatch(signupAsync(credentials))
+    } catch (err) {
+      console.log('err', err)
+    }
   }
+ 
   const validate = e => {
     e.target.value.length < 8 ? setValid(false) : setValid(true)
   }
@@ -62,6 +68,7 @@ function SignUp (props) {
         <div className="input-field">
           <button className="btn blue lighten-1">Sign Up</button>
         </div>
+        {authMsg && credentials.email && <p className='error'>{authMsg}</p>}
       </form>
     </div>
   )

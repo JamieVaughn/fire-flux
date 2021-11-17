@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: rgb(255, 250, 170); display: block; z-index: 1; position: relative; shape-rendering: auto;" width="471" height="338" preserveAspectRatio="xMidYMid" viewBox="0 0 471 338"><script xmlns="">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: skyblue; display: block; z-index: 1; position: relative; shape-rendering: auto;" width="471" height="338" preserveAspectRatio="xMidYMid" viewBox="0 0 471 338"><script xmlns="">
     try {
       Object.defineProperty(navigator, "globalPrivacyControl", {
         value: false,
@@ -10,8 +10,8 @@
       </script>
 <g transform=""><defs>
   <linearGradient id="ldbk-photon-5l5dc2jlf2b-lg" x1="0" x2="299.05" y1="0" y2="0" gradientUnits="userSpaceOnUse">
-    <stop stop-color="#e15b64" offset="0"/>
-    <stop stop-color="#f8b26a" offset="1"/>
+    <stop stop-color="skyblue" offset="0"/>
+    <stop stop-color="dodgerblue" offset="1"/>
   </linearGradient>
   <mask id="ldbk-photon-5l5dc2jlf2b-mask">
   <g><path d="M-300 -0.5 L303.29853684868306 -0.5 A10 10 0 0 1 303.29853684868306 20.5 L-300 20.5" fill="#fff" transform="translate(33.6693 0)">

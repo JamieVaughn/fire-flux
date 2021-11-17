@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { signupAsync } from '../../features/authSlice'
-import { db } from '../../../config.js'
-import { collection, doc, addDoc } from 'firebase/firestore'
+import { signupAsync, resetMsg } from '../../features/authSlice'
 
 function SignUp (props) {
   const isAuthed = useSelector(state => state.auth.currentUser)
+  const authMsg = useSelector(state => state.auth.message)
   const dispatch = useDispatch()
   const [credentials, setCredentials] = useState({
     firstName: '',
@@ -17,15 +16,14 @@ function SignUp (props) {
   const [valid, setValid] = useState(true)
 
   const handleChange = e => {
+    dispatch(resetMsg())
     setCredentials({
       ...credentials,
       [e.target.id]: e.target.value
     })
   }
   const handleSubmit = async e => {
-    e.preventDefault()
-    // console.log('signup',  credentials)
-    
+    e.preventDefault()    
     try {
       dispatch(signupAsync(credentials))
     } catch (err) {
@@ -70,6 +68,7 @@ function SignUp (props) {
         <div className="input-field">
           <button className="btn blue lighten-1">Sign Up</button>
         </div>
+        {authMsg && credentials.email && <p className='error'>{authMsg}</p>}
       </form>
     </div>
   )

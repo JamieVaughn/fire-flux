@@ -5,20 +5,18 @@ import { createPostAsync } from '../../features/postsSlice.js'
 export default function CreatePost (props) {
   const auth = useSelector(state => state.auth.currentUser)
   const dispatch = useDispatch()
-  console.log(auth)
   const [post, setPost] = useState({
-    title: 'MDN Docs',
-    link: 'https://developer.mozilla.org/en-US/',
-    category: 'html5',
-    summary: 'The mozilla developer network docs',
-    notes: 'The mozilla developer network docs',
-    author: auth.displayName
+    title: '',
+    link: '',
+    category: '',
+    summary: '',
+    notes: '',
+    author: auth.displayName ?? auth.fullName,
+    authorId: auth.uid
   })
   const [valid, setValid] = useState(true)
 
-
   const handleChange = e => {
-    console.log(e.target.id)
     setPost({
       ...post,
       [e.target.id]: e.target.value
@@ -34,7 +32,8 @@ export default function CreatePost (props) {
       category: '',
       summary: '',
       notes: '',
-      author: auth.displayName
+      author: auth.displayName ?? auth.fullName,
+      authorId: auth.uid
     })
   }
 

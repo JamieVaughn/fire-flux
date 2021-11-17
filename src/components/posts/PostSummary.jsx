@@ -12,7 +12,7 @@ function getIcon(str = '') {
 export default function PostSummary (props) {
   const {id, link, category, authorFirstName, authorLastName, summary, title} = props.post
   const { path, fill } = getIcon(category)
-  console.log('posts', props)
+  // console.log('posts', props)
   return (
     <div className="post card-horizontal grey lighten-3">
       <div className="card-image">
@@ -27,6 +27,7 @@ export default function PostSummary (props) {
           </span>
           <p className='name'>{authorFirstName} {authorLastName}</p>
           <p className="summary">{summary}</p>
+          {/* <p><pre>{JSON.stringify(props.post)}</pre></p> */}
         </div>
         <div className="card-action">
           <NavLink to={`/post/${id}`}>See Notes</NavLink>

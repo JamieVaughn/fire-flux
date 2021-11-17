@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import bgImg from '../img/bglg.svg'
+import bgImg from '../img/bglg.svg' // import img assets so relative path is correct
 import PostSummary from './PostSummary'
 import { db } from '../../../config.js'
-import { collection, doc, onSnapshot, addDoc } from 'firebase/firestore'
+import { collection, onSnapshot } from 'firebase/firestore'
 
 
 function PostList (props) {
@@ -18,12 +18,13 @@ function PostList (props) {
   }, [])
 
   return (
-    <div className="row">
-      {posts.length ? posts.map(post =>(
+    <div className="row postlist">
+      <img src={bgImg} className={posts.length ? 'loading' : ''} style={{width: '100vw', height: '100vh', position: 'absolute', left: '0'}} />
+      {posts.length ? posts.map(post => (
         <PostSummary key={post.id} post={post} title={'Title '+post} />
-      ))
-    : <img src={bgImg} width='400px' height='400px' style={{width: '100vw', height: '100vh', position: 'absolute', left: '0'}}/>
-    }
+        ))
+        : null //<img src={bgImg} style={{width: '100vw', height: '100vh', position: 'absolute', left: '0'}} />
+      }
     </div>
   )
 }

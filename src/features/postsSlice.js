@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { collection, doc, addDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import { db } from '../../config'
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 export const getPosts = createAsyncThunk(
   'posts/getPosts',
@@ -13,7 +14,7 @@ export const createPostAsync = createAsyncThunk(
   async post => {
     try {
       const postsRef = collection(db, 'posts')
-      const postRef = await addDoc(postsRef, post)
+      const postRef = await addDoc(postsRef, {...post, createdAt: serverTimestamp() })
       const notifsRef = collection(db, 'notifications')
       const payload = {
         content: 'added a new link!',

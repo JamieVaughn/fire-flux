@@ -34,4 +34,4 @@ You can also deploy only the static site files (skips cloud functions & firestor
 firebase deploy --only hosting
 ```
 
-visit it at:  bookmarks-app-9ea49.web.app
+visit the app [here](bookmarks-app-9ea49.web.app)

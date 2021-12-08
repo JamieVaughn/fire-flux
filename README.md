@@ -1,3 +1,9 @@
+## What we're building:
+
+A CRUD app with React, Redux Toolkit, Vite & Firebase for adding link posts.
+
+visit the app [here](https://bookmarks-app-9ea49.web.app)
+
 ## Firebase commands for deploying
 
 You can deploy now or later. To deploy now, open a terminal window, then navigate to or create a root directory for your web app.
@@ -33,5 +39,3 @@ You can also deploy only the static site files (skips cloud functions & firestor
 ```
 firebase deploy --only hosting
 ```
-
-visit the app [here](https://bookmarks-app-9ea49.web.app)
